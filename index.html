@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Proxy mduyk | Premium Shop</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root { --p: #22c55e; --b: #020617; --c: #1e293b; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--b); color: white; overflow-x: hidden; min-height: 100vh; user-select: none; background-image: radial-gradient(circle at top, #1e293b 0%, #020617 100%); }
+        #splash-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 10000; }
+        .logo-m { font-family: 'Orbitron'; font-size: clamp(2rem, 10vw, 3.5rem); color: var(--p); letter-spacing: 5px; text-shadow: 0 0 20px var(--p); animation: z 1.2s ease-out; }
+        @keyframes z { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        #authPage, #main, #pay { display: none; }
+        .container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 15px; max-width: 600px; margin: 0 auto; }
+        .box { background: var(--c); padding: 20px 10px; border-radius: 18px; text-align: center; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .price { color: var(--p); font-weight: 800; font-size: 1.3rem; display: block; margin: 8px 0; }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div id="splash-screen"><div class="logo-m">MDUYK</div></div>
+
+<div id="authPage"></div>
+<div id="main"></div>
+<div id="pay"></div>
+
+<script>
+    (function() {
+        const k = () => {
+            document.documentElement.innerHTML = "";
+            sessionStorage.setItem('l', '1');
+            window.location.replace("about:blank");
+        };
+        if(sessionStorage.getItem('l')) sessionStorage.removeItem('l');
+        window.addEventListener('keydown', (e) => {
+            const pc = !/Android|iPhone|iPad/i.test(navigator.userAgent);
+            if(pc && (e.key === 'F12' || (e.ctrlKey && e.shiftKey) || (e.ctrlKey && e.key === 'u'))) {
+                e.preventDefault(); k();
+            }
+        });
+        setInterval(() => {
+            const pc = !/Android|iPhone|iPad/i.test(navigator.userAgent);
+            if(pc) {
+                const t = 160;
+                if(window.outerWidth - window.innerWidth > t || window.outerHeight - window.innerHeight > t) k();
+                const a = Date.now(); debugger; if(Date.now() - a > 100) k();
+            }
+        }, 500);
+    })();
+
+    const ST = Date.now();
+    window.onload = () => {
+        setTimeout(() => {
+            document.getElementById('splash-screen').style.display = 'none';
+            rAuth();
+        }, 1500);
+        setInterval(() => {
+            const s = Math.floor((Date.now() - ST) / 1000);
+            const h = Math.floor(s / 3600).toString().padStart(2, '0');
+            const m = Math.floor((s % 3600) / 60).toString().padStart(2, '0');
+            const sc = (s % 60).toString().padStart(2, '0');
+            const el = document.getElementById('runtime');
+            if(el) el.innerText = `${h}:${m}:${sc}`;
+        }, 1000);
+    };
+
+    function rAuth() {
+        const a = document.getElementById('authPage');
+        a.style.display = 'flex';
+        a.style.justifyContent = 'center';
+        a.style.alignItems = 'center';
+        a.style.position = 'fixed';
+        a.style.inset = '0';
+        a.innerHTML = `
+            <div style="background:rgba(17,24,39,0.9); padding:25px; border-radius:20px; width:100%; max-width:360px; border:1px solid rgba(255,255,255,0.1);">
+                <h3 style="font-family:'Orbitron'; color:var(--p); text-align:center;">ĐĂNG KÝ</h3>
+                <input id="rU" placeholder="Tài khoản" style="width:100%; padding:14px; margin:8px 0; border-radius:12px; background:#1f2937; color:white; border:none; outline:none;">
+                <input id="rP" type="password" placeholder="Mật khẩu" style="width:100%; padding:14px; margin:8px 0; border-radius:12px; background:#1f2937; color:white; border:none; outline:none;">
+                <button onclick="doR()" style="width:100%; padding:14px; border:none; border-radius:12px; background:var(--p); color:#052e16; font-weight:800; cursor:pointer;">ĐĂNG KÝ NGAY</button>
+                <div style="height:1px; background:rgba(255,255,255,0.1); margin:20px 0;"></div>
+                <h3 style="font-family:'Orbitron'; color:var(--p); text-align:center;">ĐĂNG NHẬP</h3>
+                <input id="lU" placeholder="Tài khoản" style="width:100%; padding:14px; margin:8px 0; border-radius:12px; background:#1f2937; color:white; border:none; outline:none;">
+                <input id="lP" type="password" placeholder="Mật khẩu" style="width:100%; padding:14px; margin:8px 0; border-radius:12px; background:#1f2937; color:white; border:none; outline:none;">
+                <button onclick="doL()" style="width:100%; padding:14px; border:none; border-radius:12px; background:#f8fafc; color:#020617; font-weight:800; cursor:pointer;">VÀO CỬA HÀNG</button>
+            </div>
+        `;
+    }
+
+    function doR() {
+        const u = document.getElementById("rU").value.trim();
+        const p = document.getElementById("rP").value.trim();
+        if(!u || !p) return alert("điền cho đúng vào k đúng thì thôi-)");
+        localStorage.setItem("m_u", u); localStorage.setItem("m_p", p);
+        alert("Đăng ký thành công! cút vào đi e");
+    }
+
+    function doL() {
+        const u = document.getElementById("lU").value.trim();
+        const p = document.getElementById("lP").value.trim();
+        if(u === localStorage.getItem("m_u") && p === localStorage.getItem("m_p") && u !== "") {
+            document.getElementById("authPage").style.display = "none";
+            rMain();
+        } else alert("m có bt nhập không hay chx đăng ký?");
+    }
+
+    function rMain() {
+        const m = document.getElementById("main");
+        m.style.display = "block";
+        m.style.maxWidth = "600px";
+        m.style.margin = "0 auto";
+        m.innerHTML = `
+            <div style="padding:15px; background:rgba(15,23,42,0.8); position:sticky; top:0; z-index:100; border-bottom:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; backdrop-filter:blur(10px);">
+                <div><div style="font-family:'Orbitron'; color:var(--p); font-weight:700;">Proxy mduyk</div><div id="runtime" style="font-size:0.7rem; color:var(--p); font-family:monospace;">00:00:00</div></div>
+                <div style="font-size:0.8rem; color:#f87171; font-weight:bold; cursor:pointer;" onclick="location.reload()">Đăng xuất</div>
+            </div>
+            <div style="display:flex; gap:10px; padding:15px;">
+                <button id="bP" style="flex:1; padding:12px; border:none; border-radius:15px; background:var(--p); color:#052e16; font-weight:600;" onclick="sTab('p')">Proxy</button>
+                <button id="bK" style="flex:1; padding:12px; border:none; border-radius:15px; background:#1e293b; color:white; font-weight:600;" onclick="sTab('k')">Nạp KC</button>
+            </div>
+            <div id="pT" class="container">
+                <div class="box" onclick="oP('Proxy Tuần', '40.000đ')"><h3>Tuần</h3><span class="price">40k</span></div>
+                <div class="box" onclick="oP('Proxy Tháng', '80.000đ')"><h3>Tháng</h3><span class="price">80k</span></div>
+                <div class="box" onclick="oP('Proxy Năm', '180.000đ')"><h3>Năm</h3><span class="price">180k</span></div>
+            </div>
+            <div id="kT" class="container" style="display:none">
+                <div class="box" onclick="oP('113 KC', '19.800đ')"><h3>113 KC</h3><span class="price">19.8k</span></div>
+                <div class="box" onclick="oP('566 KC', '97.000đ')"><h3>566 KC</h3><span class="price">97k</span></div>
+            </div>
+            <div style="padding:25px 15px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-left:4px solid var(--p); padding-left:10px;">
+                    <h3 style="font-family:'Orbitron'; font-size:0.9rem; color:var(--p); margin:0;">LỊCH SỬ</h3>
+                    <button style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:8px; font-size:0.7rem; font-weight:bold; cursor:pointer;" onclick="cH()">m muốn xoá à</button>
+                </div>
+                <div id="hB"></div>
+            </div>
+        `;
+        lH();
+    }
+
+    function sTab(t) {
+        document.getElementById("pT").style.display = (t === "p") ? "grid" : "none";
+        document.getElementById("kT").style.display = (t === "k") ? "grid" : "none";
+        document.getElementById("bP").style.background = (t === "p") ? "var(--p)" : "#1e293b";
+        document.getElementById("bP").style.color = (t === "p") ? "#052e16" : "white";
+        document.getElementById("bK").style.background = (t === "k") ? "var(--p)" : "#1e293b";
+        document.getElementById("bK").style.color = (t === "k") ? "#052e16" : "white";
+    }
+
+    function oP(n, p) {
+        const py = document.getElementById("pay");
+        py.style.display = "flex";
+        py.style.position = "fixed";
+        py.style.inset = "0";
+        py.style.background = "rgba(0,0,0,0.85)";
+        py.style.justifyContent = "center";
+        py.style.alignItems = "center";
+        py.style.zIndex = "2000";
+        py.style.padding = "15px";
+        const ns = ["⚠ Nhập đúng ID game vào nội dung chuyển khoản", "⚠ ghi đúng cái id vào ghi chú bank sai id quên ghi vào ghi chú thì tự chịu k hoàn ", "⚠ GHI cái ID vào ghi chú bank đó k là mất tiền tự chịu", "⚠ nhập cái id vào cái ghi chú bank đó r t duyệt cho"];
+        py.innerHTML = `
+            <div style="background:#1e293b; padding:25px; border-radius:24px; width:100%; max-width:400px; border:1px solid var(--p);">
+                <h3 style="color:var(--p); text-align:center; margin:0 0 10px 0;">THANH TOÁN</h3>
+                <p style="text-align:center; font-weight:bold; margin:0; font-size:1.1rem;">\${n} (\${p})</p>
+                <input id="gID" placeholder="Nhập ID game" style="width:100%; padding:15px; border-radius:12px; border:none; background:#0f172a; color:white; margin:15px 0; outline:none; border:1px solid #334155;">
+                <div style="background:#0f172a; padding:15px; border-radius:15px; border: 1px solid #334155;">
+                    <p style="margin:0; font-size:0.7rem; color:#94a3b8;">MB BANK</p>
+                    <p style="margin:5px 0; font-weight:800; font-size:1rem;">CAO MINH DUY</p>
+                    <p style="color:var(--p); font-size:1.4rem; margin:0; font-family:monospace;"><b>0588807300000</b></p>
+                </div>
+                <div style="margin:10px 0; color:#facc15; font-size:0.75rem; font-weight:600; background:rgba(250,204,21,0.1); padding:12px; border-radius:12px; border:1px dashed rgba(250,204,21,0.3);">\${ns[Math.floor(Math.random()*ns.length)]}</div>
+                <button onclick="cfP('\${n} (\${p})')" style="background:var(--p); width:100%; padding:16px; border:none; border-radius:12px; font-weight:800; margin-top:15px; color:#052e16; cursor:pointer;">EM BANK RỒI Ạ</button>
+                <button onclick="document.getElementById('pay').style.display='none'" style="background:none; border:none; color:#64748b; width:100%; margin-top:10px; cursor:pointer;">Quay lại</button>
+            </div>
+        `;
+    }
+
+    function cfP(pr) {
+        const id = document.getElementById("gID").value.trim();
+        if(!id) return alert("Nhập ID game!");
+        const h = JSON.parse(localStorage.getItem("m_h") || "[]");
+        h.unshift({ p: pr, id: id, t: new Date().toLocaleString("vi-VN") });
+        localStorage.setItem("m_h", JSON.stringify(h));
+        document.getElementById("pay").style.display = "none";
+        lH();
+        alert("Đã ghi nhận! Proxy nhắn Zalo Admin, KC đợi 10 phút.");
+        window.location.href = "https://zalo.me/0328033706";
+    }
+
+    function lH() {
+        const h = JSON.parse(localStorage.getItem("m_h") || "[]");
+        const b = document.getElementById("hB");
+        if(b) b.innerHTML = h.length ? h.map(i => `<div style="background:#111827; margin-bottom:10px; padding:15px; border-radius:15px; font-size:0.85rem; border-left:4px solid var(--p);"><b style="color:var(--p)">\${i.p}</b><br>ID: \${i.id}<br><small style="color:#64748b">\${i.t} - Đang xử lý</small></div>`).join("") : `<p style="color:#64748b; text-align:center; font-size:13px;">mua hàng ngay cho taooo.</p>`;
+    }
+
+    function cH() { if(confirm("m muốn xoá à")) { localStorage.removeItem("m_h"); lH(); } }
+</script>
+</body>
+</html>
